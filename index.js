@@ -45,7 +45,6 @@ function solarSimulation(currentMinutes){
     }
     result.power = result.power + (Math.random()*(50)-25);
     result.voltage = result.voltage + (Math.random()*(2)-1);
-    result.current = result.power/result.voltage;
     if(count<0){
         count = Math.random()*(1500)+300
         if(powerFactor>=0.7){
@@ -56,6 +55,13 @@ function solarSimulation(currentMinutes){
         }
     }
     result.power = result.power*powerFactor;
+    if(result.power<0){
+        result.power = 0;
+    }
+    if(result.voltage<0){
+        result.voltage = 0;
+    }
+    result.current = result.power/result.voltage;
     count--;
     return result;
 }
