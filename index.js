@@ -20,7 +20,6 @@ try {
 
 let a = new Date();
 
-
 setInterval(()=>{
     let a = new Date();
     test = solarSimulation((a.getMinutes() + a.getHours()*60));
@@ -31,7 +30,11 @@ setInterval(()=>{
     }
     device.publish("solar/periodic",JSON.stringify(solar));
     console.log(solar);
+    console.log(count,powerFactor);
 },1000);
+
+let count = 0;
+let powerFactor=1;
 
 function solarSimulation(currentMinutes){
     result = {};
@@ -40,8 +43,19 @@ function solarSimulation(currentMinutes){
     if(result.voltage>350){
         result.voltage=350;
     }
-    result.power = result.power + (Math.random()*(20)-10);
+    result.power = result.power + (Math.random()*(50)-25);
     result.voltage = result.voltage + (Math.random()*(2)-1);
     result.current = result.power/result.voltage;
+    if(count<0){
+        count = Math.random()*(1500)+300
+        if(powerFactor>=0.7){
+            powerFactor = Math.random()*(0.3)+0.7;
+        }
+        if(powerFactor<=0.3){
+            powerFactor = Math.random()*(0.3);
+        }
+    }
+    result.power = result.power*powerFactor;
+    count--;
     return result;
 }
